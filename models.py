@@ -57,7 +57,7 @@ class TaxonomyMember(models.Model):
         #Throw exception for missing model or group?
         type = ContentType.objects.get_for_model(self)
         tmap = TaxonomyMap.objects.filter(object_id=self.pk,
-                                          taxonomy_item__taxonomy_type=group
+                                          taxonomy_item__taxonomy_group=group
                                           )
 
         return [i.taxonomy_item for i in tmap]
@@ -65,7 +65,7 @@ class TaxonomyMember(models.Model):
     def get_taxonomy_groups(self):
         """Get a list of TaxonomyGroup objects that the
         subclassed object belongs to."""
-        tgroups = TaxonomyGroup.objects.filter(taxonomymap__object_id=self.pk).distinct()
+        tgroups = TaxonomyGroup.objects.filter(taxonomyitem__taxonomymap__object_id=self.pk).distinct()
         return tgroups
 
     class Meta:
