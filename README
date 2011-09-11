@@ -1,0 +1,34 @@
+This app provides a generic taxonomy model where you can create any types
+of taxonomy you want.  This is handled by TaxonomyGroup, TaxonomyItem,
+TaxonomyMember, and TaxonomyMap objects.
+
+Any model can be mapped to any taxonomy you want with no changes to
+the database tables required for existing models.
+
+Models:
+TaxonomyGroup:
+        This is what you are naming your class of taxonomy.  It could be tags,
+        categories, types of animals, anything you want to call it and have it
+        represent.
+
+TaxonomyItem:
+        These represent a specific classifcation within a TaxonomyGroup.
+        If your TaxonomyGroup is "types of animals" then this would probably
+        contains items such as "dog", "cat", "elephant", "dragon", etc.
+
+TaxonomyMap:
+        This maps your objects to a TaxonomyItem.  There are shortcuts built
+        into the classes so that these objects rarely need touched and do
+        their work behind the scenes.
+
+TaxonomyMember:
+        This is an abstract base class.  It does not create a database table
+        and does not currently define any fields.  It just provides a couple of
+        helpful methods for the models to interract with the taxonomy app.
+
+Admin:
+A TaxonomyMapInline is provided which can be used as an inline for any models.
+This inline allows taxonomies to be set on the models directly when editing them
+in their own admin.  This way there is no need to go into the TaxonomyMap admin
+which is a bit of a hassle to use due to needing to know.  It does not currently
+let you filter out by specific TaxonomyGroup, but it should in the future.
