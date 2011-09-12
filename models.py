@@ -18,7 +18,7 @@ class TaxonomyItem(models.Model):
     def __unicode__(self):
         return u'%s' %self.name
 
-    def get_items(self):
+    def get_members(self):
         """Returns a list of objects that have this item as
         part of their taxonomy.  This returns the actual models and not
         the TaxonomyMap item."""
@@ -26,7 +26,7 @@ class TaxonomyItem(models.Model):
         tmap = self.taxonomymap_set.all()
         return [i.content_object for i in tmap]
 
-    def add_item(self, model):
+    def add_member(self, model):
         """Add a mapping of this taxa to the model.
         This is a shortcut to avoid messing with the TaxonomyMap objects
         and the extra complexities of setting the correct values for
