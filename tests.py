@@ -14,3 +14,8 @@ class SimpleTest(TestCase):
         Tests that 1 + 1 always equals 2.
         """
         self.assertEqual(1 + 1, 2)
+
+
+#TODO:
+# test for get_taxonomy_members and the taxonomy_members template tag
+# test for TemplateItem.add_member and get_members - look at http://stackoverflow.com/questions/5097937/emulating-an-app-with-models-in-a-django-unittest
