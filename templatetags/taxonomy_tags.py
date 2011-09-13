@@ -12,22 +12,25 @@ def get_taxonomy_members(parser, token):
             "%r tag requires arguments" % token.contents.split()[0]
             )
 
-    if len(bits) == 2:
+    if len(bits) == 3:
         #sort of duplicate due to default value on TaxonomyMembers.__init__()
         var_name = "members"
-    elif len(bits) == 4 and bits[2] == "as":
-        var_name = bits[3]
+    elif len(bits) == 5 and bits[3] == "as":
+        var_name = bits[4]
 
-    return TaxonomyMembers(bits[1], var_name)
+    return TaxonomyMembers(bits[1], bits[2], var_name)
 
 class TaxonomyMembers(template.Node):
-    def __init__(self, taxonomy_item, var_name="members"):
+    def __init__(self, taxonomy_group, taxonomy_item, var_name="members"):
         self.taxonomy_item_name = template.Variable(taxonomy_item)
+        self.taxonomy_group_name = template.Variable(taxonomy_group)
         self.variable_name = var_name
 
     def render(self, context):
         resolved_name = self.taxonomy_item_name.resolve(context)
-        taxonomy_item = TaxonomyItem.objects.get(name=resolved_name)
+        resolved_group = self.taxonomy_group_name.resolve(context)
+        taxonomy_item = TaxonomyItem.objects.get(name=resolved_name,
+                                                 taxonomy_group__name=resolved_group)
         context[self.variable_name] = taxonomy_item.get_members()
         return ''
 
