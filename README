@@ -32,3 +32,15 @@ This inline allows taxonomies to be set on the models directly when editing them
 in their own admin.  This way there is no need to go into the TaxonomyMap admin
 which is a bit of a hassle to use due to needing to know.  It does not currently
 let you filter out by specific TaxonomyGroup, but it should in the future.
+
+Template Tags:
+A template tag library named taxonomy_tags is included.  This has one tag,
+taxonomy_members, which takes the taxonomy group, taxonomy item, 
+and optionally "as var_name".  If the var name is not specified, the list will
+automatically be assigned to the variable "members".
+
+{% load taxonomy_tags %}
+{% taxonomy_members mygroup myitem as related_items %}
+{% for item in related_items %}
+{% item %}<br />
+{% endfor %}
