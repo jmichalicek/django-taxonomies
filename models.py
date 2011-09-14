@@ -70,3 +70,24 @@ class TaxonomyMember(models.Model):
 
     class Meta:
         abstract = True
+
+## Figure out if we're in a test environment or not
+## from http://www.thebitguru.com/blog/view/246-Using%20custom%20settings%20in%20django%20tests
+## the last two suggestions on there are not working... python version difference, maybe?
+from os import sys
+TEST = False
+manage_command = filter(lambda x: x.find('manage.py') != -1, sys.argv)
+if len(manage_command) != 0:
+  command = sys.argv.index(manage_command[0]) + 1
+  if command < len(sys.argv):
+    TEST = sys.argv[command] == "test"
+
+if TEST:
+    # Only load classes here if in a test environment for testing.
+    # Tables for any models found here do not get created when running
+    # syncdb in a live environment, only when running manage.py test
+    class TaxonomyTest(TaxonomyMember):
+        name = models.CharField(max_length=10)
+
+        def __unicode__(self):
+            return u'%s' %self.name
