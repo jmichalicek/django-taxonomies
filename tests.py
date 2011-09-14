@@ -20,9 +20,6 @@ from taxonomy.models import *
 # test for TemplateItem.add_member and get_members - look at http://stackoverflow.com/questions/5097937/emulating-an-app-with-models-in-a-django-unittest
 
 class TaxonomyTests(TestCase):
-    """This class adds the taxonomy/test app to installed_apps
-    to use the model there for test cases."""
-
     def setUp(self):
         test_model = TaxonomyTest()
         test_model.name = 'Test Model'
@@ -46,22 +43,21 @@ class TaxonomyTests(TestCase):
         self.taxonomy_item = taxonomy_item
         self.test_model = test_model
 
-        #def test_create_taxonomized_item(self):
-        #taxonomy_item = TaxonomyItem.objects.get(name='Test Taxonomy Item')
-        #ntaxonomy_item.add_member(test_model)
 
     def test_get_taxonomies(self):
         taxonomies = self.test_model.get_taxonomies(self.taxonomy_group)
+        self.assertTrue(hasattr(taxonomies,'__iter__'))
+        self.assertEqual(taxonomies[0].pk, self.taxonomy_item.pk)
 
-        self.assertIsInstance(taxonomies, list)
+    def test_get_taxonomy_groups(self):
+        tgroups = self.test_model.get_taxonomy_groups()
+        self.assertTrue(hasattr(tgroups,'__iter__'))
+        self.assertEqual(tgroups[0].pk, self.taxonomy_group.pk)
 
-#    def test_get_taxonomy_groups(self):
-#        test_model = TaxonomyTest.objects.get(pk=1)
-#        test_model.get_taxonomy_groups()
-
-#    def test_get_members(self):
-#        taxonomy_item = TaxonomyItem.objects.get(name='Test Taxonomy Item')
-#        taxonomy_item.get_members()
+    def test_get_members(self):
+        members = self.taxonomy_item.get_members()
+        self.assertTrue(hasattr(members,'__iter__'))
+        self.assertEqual(members[0].pk, self.test_model.pk)
 
         #figure out how to test the template tag - need to parse a template
 

@@ -66,7 +66,7 @@ class TaxonomyMember(models.Model):
         """Get a list of TaxonomyGroup objects that the
         subclassed object belongs to."""
         tgroups = TaxonomyGroup.objects.filter(taxonomyitem__taxonomymap__object_id=self.pk).distinct()
-        return tgroups
+        return list(tgroups)
 
     class Meta:
         abstract = True
