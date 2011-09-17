@@ -10,6 +10,10 @@ class TaxonomyGroup(models.Model):
     def __unicode__(self):
         return u'%s' %self.name
 
+    class Meta:
+        #Seems the most likely wanted ordering for anyone... and it's what I want
+        ordering = ['name']
+
 class TaxonomyItem(models.Model):
     """An actual categorization which would be assigned to some other model"""
     taxonomy_group = models.ForeignKey(TaxonomyGroup, db_index=True)
@@ -39,6 +43,10 @@ class TaxonomyItem(models.Model):
         tmap.object_id = model.id
         tmap.taxonomy_item = self
         tmap.save()
+
+    class Meta:
+        #Again, seems the most likely wanted ordering for anyone and it's what I want
+        ordering = ['name']
 
 class TaxonomyMap(models.Model):
     """Map models to a TaxonomyItem"""
