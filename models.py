@@ -31,7 +31,7 @@ class TaxonomyItem(models.Model):
         return [i.content_object for i in tmap]
 
     def add_member(self, model):
-        """Add a mapping of this taxa to the model.
+        """Add a mapping of this taxon to the model.
         This is a shortcut to avoid messing with the TaxonomyMap objects
         and the extra complexities of setting the correct values for
         GenericForeignKey."""
