@@ -44,3 +44,8 @@ automatically be assigned to the variable "members".
 {% for item in related_items %}
 {% item %}<br />
 {% endfor %}
+
+Thanks/Additional Credits:
+I got the idea for this app from https://github.com/bkjones/django-taxonomy,
+but no code was copied, I just liked the idea and wanted to see if I could
+write my own app.
