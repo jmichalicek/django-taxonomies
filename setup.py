@@ -1,8 +1,7 @@
-from distutils.core import setup
+from setuptools import setup
 
-#files = ['taxonomy/*', 'taxonomy/templatetags/', 'taxonomy/templatetags/*']
 files = ['taxonomy/*']
-dependencies = ['django>=1.3.0', 'mock>=0.7.2']
+dependencies = ['mock>=0.7.2']
 setup(name = "django-taxonomies",
       version = "0.0.1",
       description = "A django app to provide taxonomy data for any models",
