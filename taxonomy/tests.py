@@ -6,13 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
-from django.utils import unittest
-
-from django.conf import settings
-from django.core.management import call_command
-from django.db.models import loading
-from django import test
-from django.template import Template, Context, Parser
+from django.template import Context, Parser, TemplateSyntaxError
 
 from mock import patch, Mock
 
@@ -94,3 +88,41 @@ class TaxonomyTests(TestCase):
         self.assertTrue(hasattr(c['members'],'__iter__'))
         self.assertEqual(c['members'][0].pk, self.test_model.pk)
 
+    def test_get_members_tag_as_name(self):
+        """This tests the get_taxonomy_members method which is directly called by
+        the get_members tag and so tests instantion of the TaxonomyMembers object.
+        It also tests to make sure the TaxonomyMembers' render() method works"""
+
+        parser = Parser(None)
+        token = Mock(spec=['split_contents'])
+
+        token.split_contents.return_value = ('get_members', self.taxonomy_group.name,
+                                             self.taxonomy_item.name, 'as', 'somename')
+
+
+        from templatetags.taxonomy_tags import get_taxonomy_members
+        node = get_taxonomy_members(parser,token)
+        self.assertEqual(node.taxonomy_group, self.taxonomy_group.name)
+        self.assertEqual(node.taxonomy_item, self.taxonomy_item.name)
+
+        # It feels like this part below should be its own test
+        # but the above needs to be done to test it, so might as well
+        # just consider it all one test
+        c = Context()
+        node.render(c)
+        self.assertTrue(hasattr(c['somename'],'__iter__'))
+        self.assertEqual(c['somename'][0].pk, self.test_model.pk)
+
+    def test_get_members_tag_missing_arg(self):
+        parser = Parser(None)
+        token = Mock(spec=['split_contents'], name='Taxonomy Mock')
+        token.contents = 'get_members %s' %self.taxonomy_group.name
+        token.split_contents.return_value = ('get_members', self.taxonomy_group.name,
+                                             self.taxonomy_item.name)
+        token.split_contents.side_effect = ValueError
+
+
+        from templatetags.taxonomy_tags import get_taxonomy_members
+        self.assertRaises(TemplateSyntaxError, get_taxonomy_members, *[parser,token])
+
+        
