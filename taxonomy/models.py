@@ -88,7 +88,7 @@ manage_command = filter(lambda x: x.find('manage.py') != -1, sys.argv)
 if len(manage_command) != 0:
   command = sys.argv.index(manage_command[0]) + 1
   if command < len(sys.argv):
-    TEST = sys.argv[command] == "test"
+    TEST = (sys.argv[command] == "test" or sys.argv[command] == "test_coverage")
 
 if TEST:
     # Only load classes here if in a test environment for testing.
